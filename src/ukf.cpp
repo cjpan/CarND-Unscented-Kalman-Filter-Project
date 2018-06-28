@@ -230,90 +230,21 @@ void UKF::Prediction(double delta_t) {
 
     P_ = P_ + weights_(i) * x_diff * x_diff.transpose();
   }
-
-//  std::cout << "x_ = " << std::endl << x_ << std::endl;
-//  std::cout << "P_ = " << std::endl << P_ << std::endl;
 }
 
 /**
  * Updates the state and the state covariance matrix using a laser measurement.
  * @param {MeasurementPackage} meas_package
  */
-//void UKF::UpdateLidar(MeasurementPackage meas_package) {
-//  /**
-//  TODO:
-//
-//  Complete this function! Use lidar data to update the belief about the object's
-//  position. Modify the state vector, x_, and covariance, P_.
-//
-//  You'll also need to calculate the lidar NIS.
-//  */
-//  VectorXd z = meas_package.raw_measurements_;
-//  int n_z = 2; //px and py
-//
-//  MatrixXd Zsig = MatrixXd(n_z, 2 * n_aug_ + 1);
-//
-//  for (int i = 0; i < 2 * n_aug_ + 1; i++)
-//  {
-//    double p_x = Xsig_pred_(0, i);
-//    double p_y = Xsig_pred_(1, i);
-//
-//    Zsig(0, i) = p_x;
-//    Zsig(1, i) = p_y;
-//  }
-//
-//  VectorXd z_pred = VectorXd(n_z);
-//  z_pred.fill(0.0);
-//  for (int i = 0; i < 2 * n_aug_; i++)
-//  {
-//    z_pred = z_pred + weights_(i) * Zsig.col(i);
-//  }
-//
-//  // calculate innovation covariance matrix S
-//  MatrixXd S = MatrixXd(n_z, n_z);
-//  S.fill(0.0);
-//  for (int i = 0; i < 2 * n_aug_ + 1; i++)
-//  {
-//    VectorXd z_diff = Zsig.col(i) - z_pred;
-//
-//    S = S + weights_(i) * z_diff * z_diff.transpose();
-//  }
-//
-//  MatrixXd R = MatrixXd(n_z, n_z);
-//  R.fill(0.0);
-//  R(0, 0) = std_laspx_ * std_laspx_;
-//  R(1, 1) = std_laspy_ * std_laspy_;
-//
-//  S = S + R;
-//
-//  // create matrix for cross correlation Tc
-//  MatrixXd Tc = MatrixXd(n_x_, n_z);
-//  Tc.fill(0.0);
-//
-//  // calculate cross correlation matrix
-//  for (int i = 0; i < 2 * n_aug_ + 1; i++)
-//  {
-//    VectorXd z_diff = Zsig.col(i) - z_pred;
-//
-//    VectorXd x_diff = Xsig_pred_.col(i) - x_;
-//
-//    Tc = Tc + weights_(i) * x_diff * z_diff.transpose();
-//  }
-//
-//  // calculate Kalman gain K;
-//  MatrixXd K = Tc * S.inverse();
-//
-//  // update state mean and covariance matrix redisual
-//  VectorXd y = z - z_pred;
-//
-//  x_ = x_ + K * y;
-//  P_ = P_ - K * S * K.transpose();
-//
-//  // calculate NIS
-//  NIS_laser_ = y.transpose() * S.inverse() * y;
-//}
 void UKF::UpdateLidar(MeasurementPackage meas_package) {
+  /**
+  TODO:
 
+  Complete this function! Use lidar data to update the belief about the object's
+  position. Modify the state vector, x_, and covariance, P_.
+
+  You'll also need to calculate the lidar NIS.
+  */
   // update the state by using Kalman Filter equations
   MatrixXd H_laser_ = MatrixXd(2, 5);
   H_laser_ << 1, 0, 0, 0, 0,
@@ -339,8 +270,8 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
 
   //calculate NIS
   NIS_laser_ = y.transpose() * Si * y;
-
 }
+
 /**
  * Updates the state and the state covariance matrix using a radar measurement.
  * @param {MeasurementPackage} meas_package
